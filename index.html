@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -15,8 +14,8 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: black;
-            transition: background-color 0.3s ease;
+            color: white; /* Text color set to white */
+            background-color: black; /* Background color set to black */
             position: relative;
         }
         #randomNumber {
@@ -27,6 +26,10 @@
             padding: 10px 20px;
             font-size: 4vw; /* Increased responsive font size by 100% */
             cursor: pointer;
+            background-color: white; /* Button background color */
+            color: black; /* Button text color */
+            border: none;
+            border-radius: 5px;
         }
         #legend {
             display: flex;
@@ -34,7 +37,7 @@
             align-items: center;
             margin-top: 20px;
             font-size: 3vw; /* Increased responsive font size by 100% */
-            border: 2px solid black; /* Added border */
+            border: 2px solid white; /* Added border with white color */
             padding: 10px;
             border-radius: 10px;
         }
@@ -42,36 +45,52 @@
             padding: 5px 10px;
             margin: 0 5px;
             border-radius: 5px;
-            color: black;
+            color: white; /* Legend text color */
         }
-        .white { background-color: white; }
+        .white { background-color: white; color: black; } /* Adjusted for contrast */
         .lightgreen { background-color: lightgreen; }
         .lightcoral { background-color: lightcoral; }
-        .darkred { background-color: darkred; color: white; }
+        .darkred { background-color: darkred; }
         #watermark {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 20px; /* Moved further from the random number */
+            right: 20px; /* Moved further from the random number */
             font-size: 4vw; /* Increased responsive font size by 100% */
-            color: rgba(0, 0, 0, 0.3);
+            color: rgba(255, 255, 255, 0.3); /* Watermark color */
             pointer-events: none;
+        }
+        .clickable-area {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .content {
+            position: relative;
+            z-index: 2;
         }
     </style>
 </head>
 <body>
-    <div id="randomNumber">Click the button to generate a random number!</div>
-    <button id="generateButton">点击生成</button>
-    <div id="legend">
-        <div class="legend-item white">0-25</div>
-        <div class="legend-item lightgreen">26-50</div>
-        <div class="legend-item lightcoral">51-75</div>
-        <div class="legend-item darkred">76-100</div>
+    <div class="clickable-area" id="clickableArea"></div>
+    <div class="content">
+        <div id="randomNumber">100</div>
+        <button id="generateButton">点击生成</button>
+        <div id="legend">
+            <div class="legend-item white">0-25</div>
+            <div class="legend-item lightgreen">26-50</div>
+            <div class="legend-item lightcoral">51-75</div>
+            <div class="legend-item darkred">76-100</div>
+        </div>
     </div>
     <div id="watermark">安生教练</div>
 
     <script>
         const randomNumberElement = document.getElementById('randomNumber');
         const generateButton = document.getElementById('generateButton');
+        const clickableArea = document.getElementById('clickableArea');
 
         function getRandomNumber() {
             return Math.floor(Math.random() * 101);
@@ -79,13 +98,13 @@
 
         function setBackgroundColor(number) {
             if (number >= 0 && number < 25) {
-                document.body.style.backgroundColor = 'white';
+                document.body.style.backgroundColor = 'black'; // Keep background black
             } else if (number >= 25 && number < 50) {
-                document.body.style.backgroundColor = 'lightgreen';
+                document.body.style.backgroundColor = 'black'; // Keep background black
             } else if (number >= 50 && number < 75) {
-                document.body.style.backgroundColor = 'lightcoral';
+                document.body.style.backgroundColor = 'black'; // Keep background black
             } else if (number >= 75 && number <= 100) {
-                document.body.style.backgroundColor = 'darkred';
+                document.body.style.backgroundColor = 'black'; // Keep background black
             }
         }
 
@@ -95,17 +114,11 @@
             setBackgroundColor(number);
         }
 
-        // Generate a random number every 5 seconds
-        setInterval(updateRandomNumber, 5000);
-
-        // Generate a random number on button click
         generateButton.addEventListener('click', updateRandomNumber);
+        clickableArea.addEventListener('click', updateRandomNumber);
 
-        // Generate a random number on page click
-        document.body.addEventListener('click', updateRandomNumber);
-
-        // Initial random number generation
-        updateRandomNumber();
+        // Initial random number set to 100
+        randomNumberElement.textContent = 100;
     </script>
 </body>
 </html>
